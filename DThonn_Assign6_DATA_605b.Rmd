@@ -1,0 +1,411 @@
+---
+title: "DATA_605_Assignment_6_Thonn"
+file: DThonn_Assign6_DATA_605
+name: Daniel Thonn
+output:
+  html_document: default
+  pdf_document: default
+course: DATA 605 CUNY MSDA program
+---
+
+** DATA_605_Assignment_6_Thonn - Probability Conditional **
+
+http://rpubs.com/danthonn/368738
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+``````{r, echo=TRUE}
+# install libraries if needed
+#install.packages("permutations")
+#library(permutations)
+
+#install.packages('gtools')
+#library(gtools)
+
+```
+
+** Problem-1 **
+
+1.	A box contains 54 red marbles, 9 white marbles, and 75 blue marbles. If a marble is randomly selected from the box, what is the probability that it is red or blue? Express your answer as a fraction or a decimal number rounded to four decimal places.
+
+
+``````{r, echo=TRUE}
+
+# marble counts
+red <- 54
+white <- 9
+blue <- 75
+total1 <- red + white + blue
+total1
+# [1] 138
+
+# probability or red or blue
+prob_red_blue <- (red + blue) / total1
+round(prob_red_blue,4)
+# [1] 0.9348
+
+```
+
+** Problem-2 **
+
+2.	You are going to play mini golf. A ball machine that contains 19 green golf balls, 20 red golf balls, 24 blue golf balls, and 17 yellow golf balls, randomly gives you your ball. What is the probability that you end up with a red golf ball? Express your answer as a simplified fraction or a decimal rounded to four decimal places.
+
+
+``````{r, echo=TRUE}
+
+# ball count
+green <- 19
+red <- 20
+blue <- 24
+yellow <- 17
+total2 <- green + red + blue + yellow
+round(total2,2)
+# [1] 80
+
+# probaiblity of a red golf ball
+probability_red <- red / total2
+
+round(probability_red,4)
+# [1] 0.25 
+
+```
+
+** Problem-3 **
+
+3.	A pizza delivery company classifies its customers by gender and location of residence. The research department has gathered data from a random sample of 1399 customers. The data is summarized in the table below.
+
+
+Gender and Residence of Customers
+Males Females
+Apartment 81 228
+Dorm 116 79
+With Parent(s) 215 252
+Sorority/Fraternity House 130 97
+Other 129 72
+
+What is the probability that a customer is not male or does not live with parents? Write your answer as a fraction or a
+decimal number rounded to four decimal places.
+
+Note: The probability of union of two events is given by: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+
+``````{r, echo=TRUE}
+# total amount
+total3 <- 81 + 228 + 116 + 79 + 215 + 252 + 130 + 97 + 129 + 72
+total3
+#[1] 1399
+
+# probability a customer is not male
+probability_not_male <- (228 + 79 + 252 + 97 + 72) / total3
+round(probability_not_male,4)
+#[1] 0.5204
+
+# probability customer does not live with parents
+probability_not_live_parents <- (81 + 228 + 116 + 79 + 130 + 97 + 129 + 72) / total3
+round(probability_not_live_parents,4)
+# [1] 0.6662
+
+# intersection between not_male and not_parents
+prob_not_male_and_not_parents <- (228 + 79 + 97 + 72)/ total3
+round(prob_not_male_and_not_parents,4)
+# [1] 0.3402
+
+# overall problem 3 solution
+prob3_overall <- probability_not_male + probability_not_live_parents - prob_not_male_and_not_parents
+round(prob3_overall,4)
+# [1] 0.8463
+
+
+```
+
+** Problem-4 **
+
+Determine if the following events are independent.
+Going to the gym. Losing weight.
+4.
+Select Answer: A) Dependent B) Independent
+
+Answer-4: These events dependent as going to the gym can influence losing weight.
+
+
+** Problem-5 **
+
+5. A veggie wrap at City Subs is composed of 3 different vegetables and 3 different condiments wrapped up in a tortilla. If there are 8 vegetables, 7 condiments, and 3 types of tortilla available, how many different veggie wraps can be made?
+
+Answer-5: 
+
+``````{r, echo=TRUE}
+
+# There are 3 different vegetables and 3 different condiments and 1 tortilla. find the number of combinations
+vegetables <- choose(8, 3)
+vegetables
+# [1] 56
+
+condiments <- choose(7, 3)
+condiments
+# [1] 35
+
+tortillas <- choose(3, 1)
+tortillas
+# [1] 3
+
+# Number of different vegie wraps that can be made:
+number_veg_wraps <- vegetables * condiments * tortillas
+number_veg_wraps
+# [1] 5880
+
+
+```
+
+
+** Problem-6 **
+
+6. Determine if the following events are independent.
+Jeff runs out of gas on the way to work. Liz watches the evening news.
+
+Select Answer: A) Dependent B) Independent
+
+Answer-6: These events are Independent as one event does not influence the other.
+
+
+** Problem-7 **
+
+7.	The newly elected president needs to decide the remaining 8 spots available in the cabinet he/she is appointing. If there are 14 eligible candidates for these positions (where rank matters), how many different ways can the members of the cabinet be appointed?
+
+
+``````{r, echo=TRUE}
+
+factorial(14)
+factorial(14 - 8)
+
+# As rank matters permutation will be used
+ways_candidates_appointed <- factorial(14)/(factorial(14 - 8))
+ways_candidates_appointed 
+# [1] 121,080,960
+
+
+```
+
+** Problem-8 **
+
+8. A bag contains 9 red, 4 orange, and 9 green jellybeans. What is the probability of reaching into the bag and randomly
+withdrawing 4 jellybeans such that the number of red ones is 0, the number of orange ones is 1, and the number of green
+ones is 3? Write your answer as a fraction or a decimal number rounded to four decimal places.
+
+
+``````{r, echo=TRUE}
+
+#Note: withdrawing jellybeans are independent events.
+red <- 9
+orange <- 4
+green <- 9
+total1 <- red + orange + green
+
+# number different combinations for drawing random 4 jellybeans from bag
+jellybean_4draw <- choose(total1, 4)
+
+# ways to obtain 0 reds, 1 orange and 3 greens
+red_combination <- choose(red, 0)
+orange_combination <- choose(orange, 1)
+green_combinbation <- choose(green, 3)
+
+# overall probability
+pr_jellybean <- (red_combination * orange_combination * green_combinbation) / jellybean_4draw
+
+round(pr_jellybean,4)
+# [1] 0.0459
+
+
+
+```
+
+
+** Problem-9 **
+
+9. Evaluate the following expression. 11! / 7 !
+
+11! = 11 * 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1 
+7! = 7 * 6 * 5 * 4 * 3 * 2 * 1 
+
+``````{r, echo=TRUE}
+
+answer_9 <- factorial(11)/factorial(7)
+answer_9
+# [1] 7920
+
+```
+
+** Problem-10 **
+
+10. Describe the complement of the given event.
+67% of subscribers to a fitness magazine are over the age of 34.
+
+Answer-10: Complement: 33% of subscribers to a fitness magazine are 34 years of age or younger.
+
+
+** Problem-11 **
+
+11. If you throw exactly three heads in four tosses of a coin you win $97. If not, you pay me $30.
+Step 1. Find the expected value of the proposition. Round your answer to two decimal places.
+
+``````{r, echo=TRUE}
+
+# probability four tosses.
+total_toss <- 2^4
+head_zero <- choose(4, 0)/total_toss
+head_one <- choose(4,1)/total_toss
+head_two <- choose(4,2)/total_toss
+head_three <- choose(4, 3)/total_toss
+head_four <- choose(4, 4)/total_toss
+
+prob_head <- c(head_zero, head_one, head_two, head_three, head_four)
+num_head <- 0:4
+
+head_df1 <- data.frame(num_head, prob_head)
+
+# expected value
+# if exactly 3 heads = win $97, otherwise lose $30
+win_loss <- c(-30,-30,-30,97, -30)
+
+expected_value <- sum(win_loss * head_df1[,2])
+expected_value
+
+# Answer-11-1: [1] 1.75
+# win $1.75
+
+```
+
+
+
+
+Step 2. If you played this game 559 times how much would you expect to win or lose? (Losses must be entered as
+negative.)
+
+``````{r, echo=TRUE}
+
+expected_win_559 <- 559 * 1.75
+expected_win_559
+# [1] 978.25
+
+
+```
+
+
+** Problem-12 **
+
+12. Flip a coin 9 times. If you get 4 tails or less, I will pay you $23. Otherwise you pay me $26.
+
+
+Step 1. Find the expected value of the proposition. Round your answer to two decimal places.
+
+``````{r, echo=TRUE}
+
+# probability of win 4 tails or less
+
+pr_win_4_tails_or_less <-pbinom(4,size=9, prob=0.5)
+pr_win_4_tails_or_less
+# [1] 0.5
+
+expected_value_4_9 <-round(23*pr_win_4_tails_or_less - 26*(1-pr_win_4_tails_or_less))
+expected_value_4_9
+# [1] -2
+
+
+```
+
+
+Step 2. If you played this game 994 times how much would you expect to win or lose? (Losses must be entered as
+negative.)
+
+``````{r, echo=TRUE}
+
+# for 994 plays
+expected_outcome_994 <- 994 * expected_value_4_9
+expected_outcome_994
+
+# [1] -1988
+
+```
+
+
+** Problem-13 **
+
+13. The sensitivity and specificity of the polygraph has been a subject of study and debate for years. A 2001 study of the
+use of polygraph for screening purposes suggested that the probability of detecting a liar was .59 (sensitivity) and that
+the probability of detecting a "truth teller" was .90 (specificity). We estimate that about 20% of individuals selected for the screening polygraph will lie.
+
+truth_teller_est (tte): .8
+tte_detect_truth: .8 * .9
+tte_detect_lie: .8 * (1 - .9)
+
+lie_est (le): .2
+le_detect_truth: .2 * (1-.59)
+le_detect_lie: .2 * .59
+
+a. What is the probability that an individual is actually a liar given that the polygraph detected him/her as such? (Show
+me the table or the formulaic solution or both.)
+
+``````{r, echo=TRUE}
+# probability of actually a liar|detected as a liar
+# P(A|B) = (P(B|A)P(A))/P(B)
+
+#prob detected as a liar: P(B)= (0.8*0.1) + (0.2*0.59 )
+#prob actually a liar: P(A)=0.2
+#prob given actually a liar versus detected as a liar: P(B|A)= 0.2*0.59
+
+pr_a_giv_b_1 <-(0.2*0.59)*0.2/(0.8*0.1+0.2*0.59)
+round(pr_a_giv_b_1,4)
+#Answer-13-a: [1] 0.1192
+
+```
+
+
+
+b. What is the probability that an individual is actually a truth-teller given that the polygraph detected him/her as
+such? (Show me the table or the formulaic solution or both.)
+
+``````{r, echo=TRUE}
+
+# Probability actually truth-teller|detected as a truth-teller
+# P(A|B) = (P(B|A)P(A))/P(B)
+
+#prob detected as a truth-teller: P(B)= 0.8*0.9+0.2*(1-0.59)
+#probability actually a truth-teller: P(A)=0.8
+#probability given actually a truth-teller versus detected as a truth-teller: P(B|A)= 0.8*0.9
+
+pr_a_giv_b_2 <-(0.8*0.9)*0.8/(0.8*0.9+0.2*(1-0.59))
+round(pr_a_giv_b_2,4)
+# Answer-13-b: [1] 0.7182
+
+
+```
+
+
+
+c. What is the probability that a randomly selected individual is either a liar or was identified as a liar by the
+polygraph? Be sure to write the probability statement.
+
+``````{r, echo=TRUE}
+
+# Probability of actually a truth-teller|detected as a truth-teller) 
+
+#prob truth teller detected as a liar: P(B)= 0.8*(1-0.9)
+#prob liar detected as a liar: P(A)=0.2*0.59
+
+p_a_plus_b <- (0.8*(1-0.9))+(0.2*0.59)
+p_a_plus_b
+# Answer-13-c: [1] 0.198
+
+```
+
+
+** END **
+
+
+``````{r, echo=TRUE}
+
+```
+
+
